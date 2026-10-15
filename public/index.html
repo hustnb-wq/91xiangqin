@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>金缘亲家网 - 父母帮孩子相亲平台</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google AdSense 广告脚本预留位 -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
   <style>
     body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; font-size: 18px; }
+    select, input { font-size: 17px !important; }
   </style>
 </head>
 <body class="bg-amber-50 min-h-screen pb-28">
 
-  <!-- 顶部导航与明显登录状态栏（直接标明看电视密码123456） -->
+  <!-- 顶部导航与明显登录状态栏 -->
   <header class="bg-red-700 text-white p-4 shadow-md sticky top-0 z-30">
-    <div class="max-w-5xl mx-auto flex flex-wrap justify-between items-center gap-2">
+    <div class="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-2">
       <div>
         <h1 class="text-2xl font-bold tracking-wide">🏮 金缘亲家相亲网</h1>
         <p class="text-sm text-amber-200">
@@ -31,7 +31,7 @@
   </header>
 
   <!-- 未登录时的超大号醒目提示卡 -->
-  <div id="loginBanner" class="max-w-5xl mx-auto mt-4 px-3">
+  <div id="loginBanner" class="max-w-6xl mx-auto mt-4 px-3">
     <div class="bg-white border-4 border-red-600 rounded-2xl p-5 shadow-lg text-center">
       <h2 class="text-2xl font-bold text-red-700 mb-2">👋 欢迎各位叔叔阿姨！请先登录账号</h2>
       <p class="text-gray-700 mb-4 text-lg">首次登录免费赠送 <span class="text-red-600 font-bold text-2xl">10~15 积分</span>，可直接解锁心仪孩子的微信号和电话！</p>
@@ -47,7 +47,7 @@
   </div>
 
   <!-- 主体内容区 -->
-  <main class="max-w-5xl mx-auto p-3 space-y-8">
+  <main class="max-w-6xl mx-auto p-3 space-y-8">
 
     <!-- 顶部快捷电视入口条（一眼看到密码123456） -->
     <div class="bg-purple-800 text-white rounded-2xl p-4 shadow-md flex flex-wrap items-center justify-between gap-3">
@@ -68,40 +68,127 @@
       </div>
     </div>
 
-    <!-- 模块1：相亲卡片大厅 -->
+    <!-- 模块1：相亲卡片大厅（含九大维度高级筛选面板） -->
     <section id="tab-match" class="space-y-4">
-      <div class="bg-white p-4 rounded-2xl shadow space-y-3 border-2 border-red-200">
-        <div class="flex flex-wrap gap-3 items-center justify-between">
-          <div class="flex flex-wrap gap-2 items-center">
-            <span class="font-bold text-gray-800">快速筛选：</span>
-            <select id="filterGender" onchange="loadProfiles()" class="border-2 border-red-300 rounded-lg px-3 py-2 text-lg font-bold text-red-800">
-              <option value="">全部孩子 (男女不限)</option>
-              <option value="男">🤵 找女婿 (只看男孩)</option>
-              <option value="女">👰 找儿媳 (只看女孩)</option>
-            </select>
-            <select id="filterEdu" onchange="loadProfiles()" class="border-2 border-red-300 rounded-lg px-3 py-2 text-lg">
-              <option value="">全部学历</option>
-              <option value="本科">本科</option>
-              <option value="硕士">硕士</option>
-              <option value="博士">博士</option>
-            </select>
-            <input id="filterCity" type="text" placeholder="输入城市 如:北京" class="border-2 border-red-300 rounded-lg px-3 py-2 w-36 text-lg" />
-            <button onclick="loadProfiles()" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-bold">🔍 查找</button>
-          </div>
-
+      <div class="bg-white p-5 rounded-2xl shadow-md space-y-4 border-2 border-red-200">
+        
+        <div class="flex flex-wrap justify-between items-center border-b pb-3 gap-2">
+          <h2 class="text-2xl font-extrabold text-red-700 flex items-center gap-2">
+            <span>🔍 按条件精准找亲家</span>
+            <span id="profileCountTip" class="text-base bg-red-100 text-red-800 px-3 py-1 rounded-full font-bold"></span>
+          </h2>
           <div class="flex flex-wrap gap-2">
-            <button onclick="openPublishModal()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-base font-bold shadow">
+            <button onclick="openPublishModal()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-base font-bold shadow">
               ➕ 发布我家孩子资料 (奖10积分)
             </button>
-            <button onclick="autoCollectProfiles()" id="collectBtn" class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg text-base font-bold shadow">
+            <button onclick="autoCollectProfiles()" id="collectBtn" class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-xl text-base font-bold shadow">
               🔄 全网自动搜集新资料 (+12条)
             </button>
           </div>
         </div>
 
+        <!-- 九大核心维度下拉筛选网格（大字适老版） -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          <div>
+            <label class="block text-sm font-bold text-gray-600 mb-1">1. 寻找对象</label>
+            <select id="filterGender" onchange="loadProfiles()" class="w-full border-2 border-red-300 rounded-xl px-3 py-2.5 font-bold text-red-800 bg-red-50">
+              <option value="">全部孩子 (男女不限)</option>
+              <option value="男">🤵 找女婿 (看男孩)</option>
+              <option value="女">👰 找儿媳 (看女孩)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-gray-600 mb-1">2. 出生年代/年龄</label>
+            <select id="filterAgeGroup" onchange="loadProfiles()" class="w-full border-2 border-gray-300 rounded-xl px-3 py-2.5">
+              <option value="">年龄不限</option>
+              <option value="00">00后 (2000年及以后)</option>
+              <option value="95">95后 (1995-1999年)</option>
+              <option value="90">90后 (1990-1994年)</option>
+              <option value="85">85后 (1985-1989年)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-gray-600 mb-1">3. 身高要求</label>
+            <select id="filterHeight" onchange="loadProfiles()" class="w-full border-2 border-gray-300 rounded-xl px-3 py-2.5">
+              <option value="0">身高不限</option>
+              <option value="160">160cm 及以上</option>
+              <option value="165">165cm 及以上</option>
+              <option value="170">170cm 及以上</option>
+              <option value="175">175cm 及以上</option>
+              <option value="180">180cm 及以上</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-gray-600 mb-1">4. 最高学历</label>
+            <select id="filterEdu" onchange="loadProfiles()" class="w-full border-2 border-gray-300 rounded-xl px-3 py-2.5">
+              <option value="">学历不限</option>
+              <option value="本科">本科</option>
+              <option value="硕士">硕士研究生</option>
+              <option value="博士">博士研究生</option>
+              <option value="大专">大专</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-gray-600 mb-1">5. 工作单位性质</label>
+            <select id="filterJobType" onchange="loadProfiles()" class="w-full border-2 border-gray-300 rounded-xl px-3 py-2.5">
+              <option value="">职业/单位不限</option>
+              <option value="体制内">🏛️ 公务员/事业编/体制内</option>
+              <option value="医教">🏥 教师/医生/高校</option>
+              <option value="国企">🏢 央企/国企/银行/电网</option>
+              <option value="名企">💻 互联网大厂/外企/律师</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-gray-600 mb-1">6. 住房情况</label>
+            <select id="filterHousing" onchange="loadProfiles()" class="w-full border-2 border-gray-300 rounded-xl px-3 py-2.5">
+              <option value="">房产不限</option>
+              <option value="有房">🏠 已有房产 (含全款/有贷)</option>
+              <option value="无贷">✨ 全款房 / 有房无贷款</option>
+              <option value="婚房">🎁 父母已备婚房</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-gray-600 mb-1">7. 年薪收入</label>
+            <select id="filterIncome" onchange="loadProfiles()" class="w-full border-2 border-gray-300 rounded-xl px-3 py-2.5">
+              <option value="">收入不限</option>
+              <option value="15">💰 15万以上</option>
+              <option value="20">💰 20万以上</option>
+              <option value="30">💰 30万以上</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-gray-600 mb-1">8. 所在城市 / 婚姻状况</label>
+            <div class="flex gap-1">
+              <input id="filterCity" type="text" oninput="loadProfiles()" placeholder="城市 如:北京" class="w-1/2 border-2 border-gray-300 rounded-xl px-2.5 py-2" />
+              <select id="filterMarital" onchange="loadProfiles()" class="w-1/2 border-2 border-gray-300 rounded-xl px-2 py-2">
+                <option value="">婚况不限</option>
+                <option value="未婚">未婚(头婚)</option>
+                <option value="离异">离异短婚</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 父母最爱点的快捷标签栏 -->
+        <div class="flex flex-wrap items-center gap-2 pt-3 border-t border-gray-100 text-base">
+          <span class="text-red-700 font-extrabold">🔥 父母常搜标签：</span>
+          <button onclick="setQuickTag('tizhi')" class="px-3.5 py-1.5 bg-amber-100 hover:bg-red-600 hover:text-white text-amber-900 rounded-xl font-bold border border-amber-300">🏛️ 体制内铁饭碗</button>
+          <button onclick="setQuickTag('wudai')" class="px-3.5 py-1.5 bg-amber-100 hover:bg-red-600 hover:text-white text-amber-900 rounded-xl font-bold border border-amber-300">🏠 全款有房无贷</button>
+          <button onclick="setQuickTag('gaoxueli')" class="px-3.5 py-1.5 bg-amber-100 hover:bg-red-600 hover:text-white text-amber-900 rounded-xl font-bold border border-amber-300">🎓 硕士/博士高学历</button>
+          <button onclick="setQuickTag('95hou')" class="px-3.5 py-1.5 bg-amber-100 hover:bg-red-600 hover:text-white text-amber-900 rounded-xl font-bold border border-amber-300">🌟 95后黄金年龄</button>
+          <button onclick="resetAllFilters()" class="ml-auto px-4 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl font-bold">🔄 重置全部条件</button>
+        </div>
+
         <!-- 热门城市快捷标签 -->
         <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-gray-100 text-base">
-          <span class="text-gray-500 font-bold">热门城市：</span>
+          <span class="text-gray-500 font-bold">📍 热门同城相亲：</span>
           <button onclick="quickCity('')" class="px-3 py-1 bg-red-600 text-white rounded-full font-bold">全国全部</button>
           <button onclick="quickCity('北京')" class="px-3 py-1 bg-gray-100 hover:bg-red-100 rounded-full">北京</button>
           <button onclick="quickCity('上海')" class="px-3 py-1 bg-gray-100 hover:bg-red-100 rounded-full">上海</button>
@@ -110,7 +197,8 @@
           <button onclick="quickCity('杭州')" class="px-3 py-1 bg-gray-100 hover:bg-red-100 rounded-full">杭州</button>
           <button onclick="quickCity('成都')" class="px-3 py-1 bg-gray-100 hover:bg-red-100 rounded-full">成都</button>
           <button onclick="quickCity('武汉')" class="px-3 py-1 bg-gray-100 hover:bg-red-100 rounded-full">武汉</button>
-          <span id="profileCountTip" class="ml-auto text-sm text-red-700 font-bold"></span>
+          <button onclick="quickCity('南京')" class="px-3 py-1 bg-gray-100 hover:bg-red-100 rounded-full">南京</button>
+          <button onclick="quickCity('西安')" class="px-3 py-1 bg-gray-100 hover:bg-red-100 rounded-full">西安</button>
         </div>
       </div>
 
@@ -118,7 +206,7 @@
       <div id="profilesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
     </section>
 
-    <!-- 模块2：父母交流区 (独立分区) -->
+    <!-- 模块2：父母交流区 -->
     <section id="tab-forum" class="bg-white p-5 rounded-2xl shadow-md border-t-4 border-red-600">
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-2xl font-bold text-red-700">🍵 父母相亲交流茶话会</h2>
@@ -148,7 +236,6 @@
         </a>
       </div>
 
-      <!-- 超大号醒目密码提示框：123456 -->
       <div class="bg-yellow-100 border-4 border-red-600 rounded-2xl p-5 flex flex-wrap items-center justify-between gap-4 shadow-inner">
         <div class="flex items-center gap-3">
           <span class="text-4xl">🔑</span>
@@ -166,13 +253,12 @@
         </button>
       </div>
 
-      <!-- 内嵌电视预览窗口 -->
       <div class="w-full h-[560px] border-4 border-gray-800 rounded-xl overflow-hidden bg-black">
         <iframe src="https://tv.haokansi.com" class="w-full h-full" allowfullscreen></iframe>
       </div>
     </section>
 
-    <!-- 模块4：积分获取中心 (刷Google广告 / 在线充值) -->
+    <!-- 模块4：积分获取中心 -->
     <section id="tab-points" class="bg-white p-5 rounded-2xl shadow-md border-t-4 border-yellow-500">
       <h2 class="text-2xl font-bold text-amber-800 mb-3">🪙 积分获取中心（用于解锁亲家联系方式）</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -202,7 +288,7 @@
 
   </main>
 
-  <!-- 底部固定大字导航栏（直接标出密码123456） -->
+  <!-- 底部固定大字导航栏 -->
   <nav class="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-300 flex justify-around py-2 z-30 shadow-2xl">
     <a href="#tab-match" class="flex flex-col items-center text-red-700 font-bold text-base">
       <span class="text-2xl">❤️</span><span>相亲大厅</span>
@@ -257,14 +343,29 @@
         </select>
         <input id="pubYear" type="number" placeholder="出生年份 (如: 1995)" class="border-2 p-2.5 rounded-lg" />
         <input id="pubHeight" type="number" placeholder="身高cm (如: 175)" class="border-2 p-2.5 rounded-lg" />
-        <input id="pubEdu" placeholder="学历 (如: 本科/硕士)" class="border-2 p-2.5 rounded-lg" />
+        <select id="pubEdu" class="border-2 p-2.5 rounded-lg">
+          <option value="本科">本科</option>
+          <option value="硕士">硕士</option>
+          <option value="博士">博士</option>
+          <option value="大专">大专</option>
+        </select>
         <input id="pubJob" placeholder="职业 (如: 公务员/教师)" class="border-2 p-2.5 rounded-lg" />
-        <input id="pubIncome" placeholder="年薪 (如: 20-30万)" class="border-2 p-2.5 rounded-lg" />
-        <input id="pubHouse" placeholder="住房 (如: 已购房无贷)" class="border-2 p-2.5 rounded-lg" />
+        <select id="pubIncome" class="border-2 p-2.5 rounded-lg">
+          <option value="15-20万">年薪 15-20万</option>
+          <option value="20-30万">年薪 20-30万</option>
+          <option value="30-50万">年薪 30-50万</option>
+          <option value="10-15万">年薪 10-15万</option>
+        </select>
+        <select id="pubHouse" class="border-2 p-2.5 rounded-lg">
+          <option value="已购房(无贷)">已购房(无贷)</option>
+          <option value="已购房(有贷)">已购房(有贷)</option>
+          <option value="父母已备婚房">父母已备婚房</option>
+          <option value="有房有车无贷">有房有车无贷</option>
+        </select>
         <input id="pubCity" placeholder="工作城市 (如: 北京)" class="border-2 p-2.5 rounded-lg" />
         <input id="pubWechat" placeholder="家长微信号或手机号" class="border-2 p-2.5 rounded-lg border-red-400" />
       </div>
-      <textarea id="pubIntro" rows="3" placeholder="写几句家庭情况、孩子性格及对另一半的期望..." class="w-full border-2 p-2.5 rounded-lg"></textarea>
+      <textarea id="pubIntro" rows="3" placeholder="写几句家庭情况（如是否独生、父母退休金）、婚姻状况（未婚/离异）及对另一半的期望..." class="w-full border-2 p-2.5 rounded-lg"></textarea>
       <button onclick="submitPublishProfile()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl text-xl shadow">
         ✅ 立即发布 (免费获赠10积分)
       </button>
@@ -273,25 +374,30 @@
 
   <script>
     let currentUser = JSON.parse(localStorage.getItem('qinjia_user') || 'null');
+    let allLoadedProfiles = [];
 
-    // 前端内置丰富保底相亲资料库（防接口延迟，确保打开网页0.01秒即刻展示！）
+    // 12生肖计算器（父母相亲最看重生肖属相）
+    function getZodiac(year) {
+      const zodiacs = ['猴', '鸡', '狗', '猪', '鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊'];
+      return zodiacs[year % 12] || '';
+    }
+
+    // 前端内置丰富保底相亲资料库
     const fallbackProfiles = [
-      { id: 101, name: '张先生', gender: '男', birth_year: 1993, height_cm: 178, education: '硕士', profession: '国企工程师', income: '25-35万', housing: '已购房(无贷)', city: '北京', intro: '孩子性格稳重，不抽烟不喝酒，我们老两口均已退休有充足养老金，希望找一位温柔顾家的姑娘。', avatar_url: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400', contact_wechat: 'wx_zhang1993_bj', unlock_cost: 5, source_site: '北京中山公园相亲角' },
-      { id: 102, name: '李女士', gender: '女', birth_year: 1996, height_cm: 165, education: '本科', profession: '公立小学教师', income: '15-20万', housing: '父母已备房', city: '上海', intro: '独生女，知书达理，喜欢做饭和旅游，寒暑假双休，希望男方有上进心、家庭和睦。', avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400', contact_wechat: 'wx_li1996_sh', unlock_cost: 5, source_site: '上海人民公园相亲角' },
-      { id: 103, name: '王先生', gender: '男', birth_year: 1991, height_cm: 180, education: '博士', profession: '三甲医院主治医师', income: '35-50万', housing: '市区全款房', city: '广州', intro: '工作稳定，人品端正，家风淳朴，平时忙于科室工作圈子窄，希望能遇到互相理解的伴侣。', avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400', contact_wechat: 'wx_wang1991_gz', unlock_cost: 5, source_site: '天河名校联谊会' },
-      { id: 104, name: '陈女士', gender: '女', birth_year: 1995, height_cm: 163, education: '硕士', profession: '银行理财经理', income: '20-30万', housing: '已购房(无贷)', city: '深圳', intro: '女儿性格开朗爱笑，孝顺懂事，无任何不良嗜好。父母退休无负担，诚找在深定居的踏实男士。', avatar_url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400', contact_wechat: 'wx_chen1995_sz', unlock_cost: 5, source_site: '莲花山相亲角同步' },
-      { id: 105, name: '刘先生', gender: '男', birth_year: 1994, height_cm: 176, education: '本科', profession: '海关公务员', income: '18-25万', housing: '婚房已购置', city: '北京', intro: '体制内工作朝九晚五，脾气特别好，会做家务会做饭。希望找一位同在北京工作的善良姑娘。', avatar_url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400', contact_wechat: 'wx_liu1994_bj', unlock_cost: 5, source_site: '全国机关工会联谊' },
-      { id: 106, name: '赵女士', gender: '女', birth_year: 1997, height_cm: 166, education: '硕士', profession: '高校行政辅导员', income: '15-22万', housing: '与父母同住', city: '杭州', intro: '从小乖巧懂事，气质温婉，喜欢看书煲汤。父母都是教师退休，家庭氛围极好，找情绪稳定的男生。', avatar_url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400', contact_wechat: 'wx_zhao1997_hz', unlock_cost: 5, source_site: '万松书院相亲会' },
-      { id: 107, name: '孙先生', gender: '男', birth_year: 1992, height_cm: 181, education: '硕士', profession: '互联网大厂架构师', income: '45万以上', housing: '有房有车无贷', city: '杭州', intro: '农村一步步考出来的985硕士，踏实肯干，已在杭州全款安家。不抽烟不喝酒，诚寻温柔伴侣。', avatar_url: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400', contact_wechat: 'wx_sun1992_hz', unlock_cost: 5, source_site: '名校校友相亲墙' },
-      { id: 108, name: '周女士', gender: '女', birth_year: 1994, height_cm: 162, education: '本科', profession: '税务局公务员', income: '16-20万', housing: '已购公寓一套', city: '成都', intro: '性格巴适得很，烧得一手好菜，独生女家庭无负担。希望对方身体健康、热爱生活、有责任感。', avatar_url: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400', contact_wechat: 'wx_zhou1994_cd', unlock_cost: 5, source_site: '人民公园相亲角' },
-      { id: 109, name: '吴先生', gender: '男', birth_year: 1990, height_cm: 175, education: '本科', profession: '电网正式职工', income: '22-28万', housing: '市区两居室无贷', city: '武汉', intro: '工作极其稳定，为人忠厚老实，平时喜欢钓鱼和散步。父母均有退休金，拿儿媳当亲闺女疼。', avatar_url: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400', contact_wechat: 'wx_wu1990_wh', unlock_cost: 5, source_site: '解放公园相亲角' },
-      { id: 110, name: '林女士', gender: '女', birth_year: 1998, height_cm: 167, education: '本科', profession: '三甲医院口腔医生', income: '20-28万', housing: '父母已备嫁妆房', city: '北京', intro: '北京长大的姑娘，性格直爽善良，长相白净甜美。希望找一位90后在北京踏实发展的阳光男孩。', avatar_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400', contact_wechat: 'wx_lin1998_bj', unlock_cost: 5, source_site: '全国公益相亲联盟' }
+      { id: 101, name: '张先生', gender: '男', birth_year: 1993, height_cm: 178, education: '硕士', profession: '央企国企工程师', income: '25-35万', housing: '已购房(无贷)', city: '北京', intro: '【未婚·独生子】孩子性格稳重，不抽烟不喝酒，我们老两口均已退休有充足养老金，希望找一位温柔顾家的姑娘。', avatar_url: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400', contact_wechat: 'wx_zhang1993_bj', unlock_cost: 5, source_site: '北京中山公园相亲角' },
+      { id: 102, name: '李女士', gender: '女', birth_year: 1996, height_cm: 165, education: '本科', profession: '公立小学教师(事业编)', income: '15-20万', housing: '父母已备婚房', city: '上海', intro: '【未婚·独生女】知书达理，喜欢做饭和旅游，寒暑假双休，希望男方有上进心、家庭和睦。', avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400', contact_wechat: 'wx_li1996_sh', unlock_cost: 5, source_site: '上海人民公园相亲角' },
+      { id: 103, name: '王先生', gender: '男', birth_year: 1991, height_cm: 181, education: '博士', profession: '三甲医院主治医师', income: '35-50万', housing: '市区全款房无贷', city: '广州', intro: '【未婚·有房有车】工作稳定，人品端正，家风淳朴，平时忙于科室工作圈子窄，希望能遇到互相理解的伴侣。', avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400', contact_wechat: 'wx_wang1991_gz', unlock_cost: 5, source_site: '天河名校联谊会' },
+      { id: 104, name: '陈女士', gender: '女', birth_year: 1995, height_cm: 164, education: '硕士', profession: '四大国有银行经理', income: '20-30万', housing: '已购房(无贷)', city: '深圳', intro: '【未婚·父母有退休金】女儿性格开朗爱笑，孝顺懂事。父母退休无负担，诚找在深定居的踏实男士。', avatar_url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400', contact_wechat: 'wx_chen1995_sz', unlock_cost: 5, source_site: '莲花山相亲角同步' },
+      { id: 105, name: '刘先生', gender: '男', birth_year: 1996, height_cm: 176, education: '本科', profession: '海关公务员(体制内)', income: '18-25万', housing: '父母已备婚房', city: '北京', intro: '【未婚·独生子】体制内工作朝九晚五，脾气特别好，会做家务会做饭。希望找一位同在北京工作的善良姑娘。', avatar_url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400', contact_wechat: 'wx_liu1996_bj', unlock_cost: 5, source_site: '全国机关工会联谊' },
+      { id: 106, name: '赵女士', gender: '女', birth_year: 1998, height_cm: 166, education: '硕士', profession: '高校行政辅导员(事业编)', income: '15-22万', housing: '已购房(无贷)', city: '杭州', intro: '【未婚·书香门第】从小乖巧懂事，气质温婉，喜欢看书煲汤。父母都是教师退休，找情绪稳定的男生。', avatar_url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400', contact_wechat: 'wx_zhao1998_hz', unlock_cost: 5, source_site: '万松书院相亲会' },
+      { id: 107, name: '孙先生', gender: '男', birth_year: 1992, height_cm: 182, education: '硕士', profession: '互联网大厂架构师', income: '45万以上', housing: '有房有车无贷', city: '杭州', intro: '【未婚·985名校】踏实肯干，已在杭州全款安家。不抽烟不喝酒，诚寻温柔伴侣。', avatar_url: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400', contact_wechat: 'wx_sun1992_hz', unlock_cost: 5, source_site: '名校校友相亲墙' },
+      { id: 108, name: '周女士', gender: '女', birth_year: 1994, height_cm: 162, education: '本科', profession: '税务局公务员(体制内)', income: '16-20万', housing: '已购房(无贷)', city: '成都', intro: '【未婚·独生女】性格温和，烧得一手好菜，独生女家庭无负担。希望对方身体健康、有责任感。', avatar_url: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400', contact_wechat: 'wx_zhou1994_cd', unlock_cost: 5, source_site: '人民公园相亲角' },
+      { id: 109, name: '吴先生', gender: '男', birth_year: 1988, height_cm: 175, education: '本科', profession: '国家电网正式职工(国企)', income: '22-28万', housing: '市区两居室无贷', city: '武汉', intro: '【离异未育·诚心再婚】工作极其稳定，为人忠厚老实，短婚未育无负担。父母均有退休金，拿儿媳当亲闺女疼。', avatar_url: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400', contact_wechat: 'wx_wu1988_wh', unlock_cost: 5, source_site: '解放公园相亲角' },
+      { id: 110, name: '林女士', gender: '女', birth_year: 2000, height_cm: 168, education: '本科', profession: '三甲医院口腔科医生', income: '20-28万', housing: '父母已备婚房', city: '北京', intro: '【未婚·00后】北京长大的姑娘，性格直爽善良，长相白净甜美。希望找一位在北京踏实发展的阳光男孩。', avatar_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400', contact_wechat: 'wx_lin2000_bj', unlock_cost: 5, source_site: '全国公益相亲联盟' }
     ];
 
     function copyTvPassword(isJump = false) {
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText('123456');
-      }
+      if (navigator.clipboard) navigator.clipboard.writeText('123456');
       if (isJump) {
         alert('🔑 已自动为您复制电视登录密码：123456\n进入电视网站后直接粘贴即可观看！');
       } else {
@@ -324,7 +430,6 @@
       document.getElementById('loginModal').classList.add('hidden');
       document.getElementById('loginModal').classList.remove('flex');
     }
-
     function openPublishModal() {
       if (!currentUser) return openLoginModal();
       document.getElementById('publishModal').classList.remove('hidden');
@@ -351,9 +456,7 @@
           body: JSON.stringify({ loginType: type, account, nickname: type === 'wechat' ? '微信家长' : undefined })
         });
         const json = await res.json();
-        if (json.code === 0) {
-          currentUser = json.data;
-        }
+        if (json.code === 0) currentUser = json.data;
       } catch (e) {
         currentUser = { id: 1, nickname: type === 'wechat' ? '微信爱心家长' : account.slice(0,3)+'****家长', points: type === 'wechat' ? 15 : 10 };
       }
@@ -370,37 +473,136 @@
       location.reload();
     }
 
+    // 快捷城市与父母高频标签筛选
     function quickCity(city) {
       document.getElementById('filterCity').value = city;
-      loadProfiles();
+      applyClientFilters();
+    }
+
+    function resetAllFilters() {
+      document.getElementById('filterGender').value = '';
+      document.getElementById('filterAgeGroup').value = '';
+      document.getElementById('filterHeight').value = '0';
+      document.getElementById('filterEdu').value = '';
+      document.getElementById('filterJobType').value = '';
+      document.getElementById('filterHousing').value = '';
+      document.getElementById('filterIncome').value = '';
+      document.getElementById('filterCity').value = '';
+      document.getElementById('filterMarital').value = '';
+      applyClientFilters();
+    }
+
+    function setQuickTag(tag) {
+      resetAllFilters();
+      if (tag === 'tizhi') document.getElementById('filterJobType').value = '体制内';
+      if (tag === 'wudai') document.getElementById('filterHousing').value = '无贷';
+      if (tag === 'gaoxueli') document.getElementById('filterEdu').value = '硕士';
+      if (tag === '95hou') document.getElementById('filterAgeGroup').value = '95';
+      applyClientFilters();
+    }
+
+    // 九大维度前端毫秒级精准过滤引擎
+    function applyClientFilters() {
+      const gender = document.getElementById('filterGender').value;
+      const ageGroup = document.getElementById('filterAgeGroup').value;
+      const minHeight = parseInt(document.getElementById('filterHeight').value) || 0;
+      const edu = document.getElementById('filterEdu').value;
+      const jobType = document.getElementById('filterJobType').value;
+      const housing = document.getElementById('filterHousing').value;
+      const minIncome = parseInt(document.getElementById('filterIncome').value) || 0;
+      const city = document.getElementById('filterCity').value.trim();
+      const marital = document.getElementById('filterMarital').value;
+
+      const filtered = allLoadedProfiles.filter(p => {
+        if (gender && p.gender !== gender) return false;
+        if (minHeight > 0 && p.height_cm < minHeight) return false;
+        if (edu && !p.education.includes(edu)) return false;
+        if (city && !p.city.includes(city)) return false;
+
+        // 年代过滤
+        if (ageGroup === '00' && p.birth_year < 2000) return false;
+        if (ageGroup === '95' && (p.birth_year < 1995 || p.birth_year > 1999)) return false;
+        if (ageGroup === '90' && (p.birth_year < 1990 || p.birth_year > 1994)) return false;
+        if (ageGroup === '85' && (p.birth_year < 1985 || p.birth_year > 1989)) return false;
+
+        // 工作性质过滤
+        const jobText = (p.profession || '') + (p.intro || '');
+        if (jobType === '体制内' && !/公务员|事业|体制|机关|海关|税务|编制/.test(jobText)) return false;
+        if (jobType === '医教' && !/教师|老师|医生|医师|护师|高校|讲师|辅导员|医院|小学|中学/.test(jobText)) return false;
+        if (jobType === '国企' && !/国企|央企|银行|电网|工程师|研究院|航空/.test(jobText)) return false;
+        if (jobType === '名企' && !/互联网|架构|外企|主管|律师|设计|经理/.test(jobText)) return false;
+
+        // 房产过滤
+        const houseText = (p.housing || '') + (p.intro || '');
+        if (housing === '有房' && !/房|套/.test(houseText)) return false;
+        if (housing === '无贷' && !/无贷|全款|备房|婚房/.test(houseText)) return false;
+        if (housing === '婚房' && !/婚房|备房|嫁妆|全款/.test(houseText)) return false;
+
+        // 年薪过滤（提取数字上限比对）
+        if (minIncome > 0) {
+          const nums = (p.income || '').match(/\d+/g);
+          const maxNum = nums ? Math.max(...nums.map(Number)) : 20;
+          if (maxNum < minIncome) return false;
+        }
+
+        // 婚姻状况过滤
+        const fullText = (p.intro || '');
+        if (marital === '离异' && !fullText.includes('离异')) return false;
+        if (marital === '未婚' && fullText.includes('离异')) return false;
+
+        return true;
+      });
+
+      renderProfileCards(filtered);
     }
 
     function renderProfileCards(list) {
       const container = document.getElementById('profilesContainer');
-      document.getElementById('profileCountTip').innerText = `当前共展示 ${list.length} 位优质男女嘉宾`;
+      document.getElementById('profileCountTip').innerText = `共找到 ${list.length} 位符合条件的孩子`;
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-2 bg-white rounded-2xl p-8 text-center border-2 border-dashed border-red-300 space-y-3">
+            <p class="text-2xl font-bold text-gray-700">😅 暂无完全符合该严苛条件的孩子资料</p>
+            <p class="text-gray-500">建议您点击下方按钮放宽筛选条件，或点“全网自动搜集新资料”补充更多嘉宾！</p>
+            <div class="flex justify-center gap-3 pt-2">
+              <button onclick="resetAllFilters()" class="bg-red-600 text-white font-bold px-6 py-2.5 rounded-xl">🔄 显示全部资料</button>
+              <button onclick="autoCollectProfiles()" class="bg-amber-600 text-white font-bold px-6 py-2.5 rounded-xl">➕ 全网搜集更多嘉宾</button>
+            </div>
+          </div>
+        `;
+        return;
+      }
 
       container.innerHTML = list.map(p => {
         const age = new Date().getFullYear() - p.birth_year;
+        const zodiac = getZodiac(p.birth_year);
+        const isDivorced = (p.intro || '').includes('离异');
         return `
           <div class="bg-white rounded-2xl shadow-md p-5 border-2 border-amber-200 flex flex-col justify-between space-y-3 hover:border-red-500 transition">
             <div>
               <div class="flex items-center gap-4">
                 <img src="${p.avatar_url}" class="w-20 h-20 rounded-full object-cover border-2 border-red-500 shrink-0" />
-                <div>
+                <div class="flex-1">
                   <div class="flex flex-wrap items-center gap-2">
                     <h3 class="text-2xl font-bold text-gray-900">${p.name}</h3>
-                    <span class="px-2.5 py-0.5 rounded-full text-sm font-bold ${p.gender === '男' ? 'bg-blue-100 text-blue-800' : 'bg-pink-100 text-pink-800'}">${p.gender} · ${age}岁 (${p.birth_year}年)</span>
+                    <span class="px-2.5 py-0.5 rounded-full text-sm font-bold ${p.gender === '男' ? 'bg-blue-100 text-blue-800' : 'bg-pink-100 text-pink-800'}">
+                      ${p.gender} · ${age}岁 (${p.birth_year}属${zodiac})
+                    </span>
+                    <span class="px-2 py-0.5 rounded text-xs font-bold ${isDivorced ? 'bg-gray-200 text-gray-700' : 'bg-green-100 text-green-800'}">
+                      ${isDivorced ? '离异诚意再婚' : '未婚头婚'}
+                    </span>
                   </div>
-                  <p class="text-base text-gray-600 mt-1">📍 ${p.city} | 📏 ${p.height_cm}cm | 🎓 ${p.education}</p>
-                  <span class="inline-block mt-1 text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded">来源：${p.source_site || '本站实名'}</span>
+                  <p class="text-base text-gray-700 font-bold mt-1">📍 ${p.city} | 📏 ${p.height_cm}cm | 🎓 ${p.education}</p>
+                  <span class="inline-block mt-1 text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded">认证来源：${p.source_site || '本站实名'}</span>
                 </div>
               </div>
-              <div class="mt-3 grid grid-cols-2 gap-2 bg-amber-50 p-3 rounded-xl text-base">
+              <div class="mt-3 grid grid-cols-2 gap-2 bg-amber-50 p-3 rounded-xl text-base border border-amber-200">
                 <div><b>💼 职业：</b>${p.profession}</div>
-                <div><b>💰 年薪：</b>${p.income}</div>
-                <div class="col-span-2"><b>🏠 住房情况：</b>${p.housing}</div>
+                <div><b>💰 年薪：</b><span class="text-red-700 font-bold">${p.income}</span></div>
+                <div class="col-span-2"><b>🏠 车房情况：</b>${p.housing}</div>
               </div>
-              <p class="mt-3 text-gray-700 leading-relaxed text-base"><b>家长寄语：</b>${p.intro}</p>
+              <p class="mt-3 text-gray-700 leading-relaxed text-base"><b>💌 父母寄语：</b>${p.intro}</p>
             </div>
 
             <div class="pt-3 border-t border-gray-200">
@@ -420,28 +622,19 @@
     }
 
     async function loadProfiles() {
-      const gender = document.getElementById('filterGender').value;
-      const edu = document.getElementById('filterEdu').value;
-      const city = document.getElementById('filterCity').value.trim();
       const userId = currentUser ? currentUser.id : 0;
-
       try {
-        const res = await fetch(`/api/profiles?userId=${userId}&gender=${encodeURIComponent(gender)}&city=${encodeURIComponent(city)}&edu=${encodeURIComponent(edu)}`);
+        const res = await fetch(`/api/profiles?userId=${userId}`);
         const json = await res.json();
         if (json.code === 0 && Array.isArray(json.data) && json.data.length > 0) {
-          renderProfileCards(json.data);
+          allLoadedProfiles = json.data;
+          applyClientFilters();
           return;
         }
       } catch (e) {}
 
-      // 如果后端为空或报错，使用前端保底相亲库立即展示
-      let filtered = fallbackProfiles.filter(p => {
-        if (gender && p.gender !== gender) return false;
-        if (edu && !p.education.includes(edu)) return false;
-        if (city && !p.city.includes(city)) return false;
-        return true;
-      });
-      renderProfileCards(filtered);
+      allLoadedProfiles = fallbackProfiles;
+      applyClientFilters();
     }
 
     async function unlockCard(profileId, fallbackContact, cost) {
@@ -469,7 +662,6 @@
         }
       } catch (e) {}
 
-      // 本地保底解锁逻辑
       if (currentUser.points < cost) {
         alert(`积分不足！解锁需 ${cost} 积分，请看Google广告免费领积分或充值。`);
         location.hash = '#tab-points';
@@ -477,10 +669,10 @@
       }
       currentUser.points -= cost;
       localStorage.setItem('qinjia_user', JSON.stringify(currentUser));
-      const item = fallbackProfiles.find(x => x.id === profileId);
+      const item = allLoadedProfiles.find(x => x.id === profileId);
       if (item) item.is_unlocked = true;
       updateHeaderUI();
-      loadProfiles();
+      applyClientFilters();
       alert(`🎉 解锁成功！家长微信/电话：${fallbackContact}`);
     }
 
@@ -498,26 +690,25 @@
         }
       } catch (e) {}
 
-      // 前端同步生成12条新资料追加
       const surnames = ['赵', '钱', '孙', '李', '周', '吴', '郑', '王', '冯', '陈', '褚', '卫'];
       const cities = ['北京', '上海', '广州', '深圳', '杭州', '成都', '武汉', '南京'];
-      const jobs = ['三甲医院医生', '重点中学教师', '国企工程师', '银行经理', '公务员', '高校讲师'];
+      const jobs = ['三甲医院医生', '公立中学教师(事业编)', '央企工程师', '国有银行经理', '海关公务员(体制内)', '高校讲师'];
       for (let i = 0; i < 12; i++) {
         const isMale = i % 2 === 0;
         const s = surnames[i % surnames.length];
-        const y = 1990 + (i % 9);
+        const y = 1990 + (i % 11);
         fallbackProfiles.unshift({
           id: Date.now() + i,
           name: s + (isMale ? '先生' : '女士'),
           gender: isMale ? '男' : '女',
           birth_year: y,
-          height_cm: isMale ? 176 + (i % 7) : 162 + (i % 6),
+          height_cm: isMale ? 174 + (i % 9) : 161 + (i % 8),
           education: i % 3 === 0 ? '硕士' : '本科',
           profession: jobs[i % jobs.length],
-          income: '20-35万',
-          housing: '已购房(无贷)',
+          income: i % 2 === 0 ? '25-35万' : '15-25万',
+          housing: i % 2 === 0 ? '已购房(无贷)' : '父母已备婚房',
           city: cities[i % cities.length],
-          intro: '该资料由全网公益相亲联盟实时同步，孩子工作稳定、人品端正，父母通情达理有退休金。',
+          intro: '【未婚·独生子女】该资料由全网公益相亲联盟实时同步，孩子工作稳定、人品端正，父母通情达理有退休金。',
           avatar_url: isMale ? 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400' : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400',
           contact_wechat: `wx_${y}_${Math.floor(1000 + Math.random() * 9000)}`,
           unlock_cost: 5,
@@ -525,8 +716,7 @@
         });
       }
       btn.innerText = '🔄 全网自动搜集新资料 (+12条)';
-      document.getElementById('filterCity').value = '';
-      loadProfiles();
+      resetAllFilters();
       alert('🎉 成功从全网相亲联盟自动搜集并新增 12 位优质男女嘉宾！');
     }
 
@@ -537,13 +727,13 @@
         gender: document.getElementById('pubGender').value,
         birth_year: parseInt(document.getElementById('pubYear').value) || 1995,
         height_cm: parseInt(document.getElementById('pubHeight').value) || 172,
-        education: document.getElementById('pubEdu').value.trim() || '本科',
+        education: document.getElementById('pubEdu').value,
         profession: document.getElementById('pubJob').value.trim() || '正式职员',
-        income: document.getElementById('pubIncome').value.trim() || '15-25万',
-        housing: document.getElementById('pubHouse').value.trim() || '已购房',
+        income: document.getElementById('pubIncome').value,
+        housing: document.getElementById('pubHouse').value,
         city: document.getElementById('pubCity').value.trim() || '北京',
         contact_wechat: document.getElementById('pubWechat').value.trim(),
-        intro: document.getElementById('pubIntro').value.trim() || '孩子人品端正，工作稳定，诚心找对象。'
+        intro: document.getElementById('pubIntro').value.trim() || '【未婚】孩子人品端正，工作稳定，诚心找对象。'
       };
       if (!payload.contact_wechat) return alert('请填写家长微信号或手机号！');
 
@@ -555,7 +745,7 @@
         });
       } catch (e) {}
 
-      fallbackProfiles.unshift({
+      allLoadedProfiles.unshift({
         id: Date.now(),
         ...payload,
         avatar_url: payload.gender === '男' ? 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400' : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400',
@@ -567,7 +757,7 @@
       localStorage.setItem('qinjia_user', JSON.stringify(currentUser));
       updateHeaderUI();
       closePublishModal();
-      loadProfiles();
+      applyClientFilters();
       alert('🎉 发布成功！已奖励您 10 积分！');
     }
 
