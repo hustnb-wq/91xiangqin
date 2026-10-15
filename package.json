@@ -1,0 +1,10 @@
+{
+  "name": "qin-jia-xiang-qin",
+  "version": "1.0.0",
+  "dependencies": {
+    "hono": "^4.0.0"
+  },
+  "scripts": {
+    "deploy": "wrangler pages deploy public"
+  }
+}
