@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>金缘亲家网 - 父母帮孩子相亲平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google AdSense 广告脚本预留位 -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  <style>
+    body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; font-size: 18px; }
+  </style>
+</head>
+<body class="bg-amber-50 min-h-screen pb-24">
+
+  <!-- 顶部导航与明显登录状态栏 -->
+  <header class="bg-red-700 text-white p-4 shadow-md sticky top-0 z-30">
+    <div class="max-w-4xl mx-auto flex flex-wrap justify-between items-center gap-2">
+      <div>
+        <h1 class="text-2xl font-bold tracking-wide">🏮 金缘亲家相亲网</h1>
+        <p class="text-sm text-amber-200">实名相亲 · 父母把关 · 门当户对</p>
+      </div>
+      <!-- 登录前显示大按钮，登录后显示积分 -->
+      <div id="userStatusArea">
+        <button onclick="openLoginModal()" class="bg-yellow-400 hover:bg-yellow-300 text-red-900 font-extrabold px-5 py-2.5 rounded-full text-lg shadow-lg animate-pulse">
+          👉 点击微信/手机号登录
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 未登录时的超大号醒目提示卡 -->
+  <div id="loginBanner" class="max-w-4xl mx-auto mt-4 px-3">
+    <div class="bg-white border-4 border-red-600 rounded-2xl p-5 shadow-lg text-center">
+      <h2 class="text-2xl font-bold text-red-700 mb-2">👋 欢迎各位叔叔阿姨！请先登录账号</h2>
+      <p class="text-gray-700 mb-4 text-lg">首次登录免费赠送 <span class="text-red-600 font-bold text-2xl">10~15 积分</span>，可直接解锁心仪孩子的微信号和电话！</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <button onclick="openLoginModal('wechat')" class="bg-green-600 hover:bg-green-700 text-white text-xl font-bold py-4 px-8 rounded-xl shadow flex items-center justify-center gap-2">
+          💬 微信一键快速登录 (送15积分)
+        </button>
+        <button onclick="openLoginModal('phone')" class="bg-blue-600 hover:bg-blue-700 text-white text-xl font-bold py-4 px-8 rounded-xl shadow flex items-center justify-center gap-2">
+          📱 手机号码免密登录 (送10积分)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 主体内容区 -->
+  <main class="max-w-4xl mx-auto p-3 space-y-8">
+
+    <!-- 模块1：相亲卡片大厅 -->
+    <section id="tab-match" class="space-y-4">
+      <div class="bg-white p-4 rounded-xl shadow flex flex-wrap gap-3 items-center justify-between">
+        <div class="flex flex-wrap gap-2 items-center">
+          <span class="font-bold text-gray-800">快速筛选：</span>
+          <select id="filterGender" onchange="loadProfiles()" class="border-2 border-red-300 rounded-lg px-3 py-2 text-lg">
+            <option value="">全部性别</option>
+            <option value="男">找女婿 (看男孩)</option>
+            <option value="女">找儿媳 (看女孩)</option>
+          </select>
+          <input id="filterCity" type="text" placeholder="输入城市 如:北京" class="border-2 border-red-300 rounded-lg px-3 py-2 w-40 text-lg" />
+          <button onclick="loadProfiles()" class="bg-red-600 text-white px-5 py-2 rounded-lg font-bold">查找</button>
+        </div>
+        <button onclick="autoCollectProfiles()" class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg text-base font-bold">
+          🔄 自动采集外部开放资料
+        </button>
+      </div>
+
+      <!-- 相亲卡片列表 -->
+      <div id="profilesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    </section>
+
+    <!-- 模块2：父母交流区 (独立分区) -->
+    <section id="tab-forum" class="bg-white p-5 rounded-2xl shadow-md border-t-4 border-red-600">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold text-red-700">🍵 父母相亲交流茶话会</h2>
+        <span class="text-gray-500 text-base">聊聊儿女婚事、彩礼习俗、相亲经验</span>
+      </div>
+
+      <!-- 发帖框 -->
+      <div class="bg-amber-50 p-4 rounded-xl mb-4 space-y-3">
+        <textarea id="postContent" rows="2" placeholder="叔叔阿姨，在这里写下您家孩子的情况或想交流的话题..." class="w-full p-3 border-2 border-amber-300 rounded-lg text-lg"></textarea>
+        <div class="flex justify-between items-center">
+          <input id="postCity" type="text" placeholder="所在城市 (如:上海)" class="border-2 border-amber-300 rounded-lg px-3 py-1.5 w-44" />
+          <button onclick="submitForumPost()" class="bg-red-600 text-white font-bold px-6 py-2 rounded-lg text-lg">发表话题</button>
+        </div>
+      </div>
+
+      <!-- 帖子列表 -->
+      <div id="forumContainer" class="space-y-3"></div>
+    </section>
+
+    <!-- 模块3：父母娱乐看电视专区 (直连 tv.haokansi.com) -->
+    <section id="tab-tv" class="bg-white p-5 rounded-2xl shadow-md border-t-4 border-purple-600">
+      <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+        <div>
+          <h2 class="text-2xl font-bold text-purple-800">📺 爸妈休闲娱乐 · 免费看电视专区</h2>
+          <p class="text-gray-600">看累了相亲资料？点这里看戏曲、经典老剧、卫视直播（已连接 tv.haokansi.com）</p>
+        </div>
+        <a href="https://tv.haokansi.com" target="_blank" rel="noopener noreferrer" class="bg-purple-700 hover:bg-purple-800 text-white font-bold px-6 py-3 rounded-xl text-xl shadow-lg">
+          🔍 全屏打开电视网站 (tv.haokansi.com)
+        </a>
+      </div>
+      <!-- 内嵌电视预览窗口 -->
+      <div class="w-full h-[520px] border-4 border-gray-800 rounded-xl overflow-hidden bg-black">
+        <iframe src="https://tv.haokansi.com" class="w-full h-full" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <!-- 模块4：积分获取中心 (刷Google广告 / 在线充值) -->
+    <section id="tab-points" class="bg-white p-5 rounded-2xl shadow-md border-t-4 border-yellow-500">
+      <h2 class="text-2xl font-bold text-amber-800 mb-3">🪙 积分获取中心（用于解锁亲家联系方式）</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- 方式1：刷 Google 广告免费领 -->
+        <div class="border-2 border-green-500 bg-green-50 p-4 rounded-xl flex flex-col justify-between">
+          <div>
+            <span class="bg-green-600 text-white px-3 py-1 rounded-full text-sm font-bold">免费福利</span>
+            <h3 class="text-xl font-bold text-green-900 mt-2">观看 Google 推广广告</h3>
+            <p class="text-gray-700 mt-1">每次完整浏览下方或弹窗 Google 广告 5 秒，立得 <b>+5 积分</b>（可解锁1张相亲卡）。</p>
+          </div>
+          <button onclick="earnPoints('ad')" class="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl text-lg shadow">
+            ▶️ 立即看 Google 广告 (+5积分)
+          </button>
+        </div>
+
+        <!-- 方式2：直接花钱购买积分 -->
+        <div class="border-2 border-red-500 bg-red-50 p-4 rounded-xl flex flex-col justify-between">
+          <div>
+            <span class="bg-red-600 text-white px-3 py-1 rounded-full text-sm font-bold">省心快捷</span>
+            <h3 class="text-xl font-bold text-red-900 mt-2">直接充值购买积分</h3>
+            <p class="text-gray-700 mt-1">10元 = <b>50 积分</b>（免看广告，可直接解锁 10 位优质孩子的家长微信/电话）。</p>
+          </div>
+          <button onclick="earnPoints('recharge_10')" class="mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl text-lg shadow">
+            💳 微信/支付宝充值 10元 (+50积分)
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 底部固定大字导航栏 -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-300 flex justify-around py-2 z-30 shadow-2xl">
+    <a href="#tab-match" class="flex flex-col items-center text-red-700 font-bold text-base">
+      <span class="text-2xl">❤️</span><span>相亲大厅</span>
+    </a>
+    <a href="#tab-forum" class="flex flex-col items-center text-gray-700 hover:text-red-700 font-bold text-base">
+      <span class="text-2xl">🍵</span><span>父母交流区</span>
+    </a>
+    <a href="#tab-tv" class="flex flex-col items-center text-purple-700 font-bold text-base">
+      <span class="text-2xl">📺</span><span>看电视娱乐</span>
+    </a>
+    <a href="#tab-points" class="flex flex-col items-center text-amber-700 font-bold text-base">
+      <span class="text-2xl">🪙</span><span>赚积分/充值</span>
+    </a>
+  </nav>
+
+  <!-- 醒目登录弹窗 (支持微信一键登录 & 手机号登录) -->
+  <div id="loginModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-5 border-4 border-red-600">
+      <div class="flex justify-between items-center">
+        <h3 class="text-2xl font-extrabold text-red-700">🔐 家长快速登录</h3>
+        <button onclick="closeLoginModal()" class="text-gray-500 text-2xl font-bold">✕</button>
+      </div>
+
+      <!-- 微信登录区 -->
+      <div class="bg-green-50 p-4 rounded-xl border-2 border-green-500 text-center space-y-3">
+        <p class="font-bold text-green-900 text-lg">方式一：微信一键授权登录（最方便）</p>
+        <button onclick="doLogin('wechat')" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl text-xl shadow">
+          💬 微信一键登录 (立送15积分)
+        </button>
+      </div>
+
+      <div class="text-center text-gray-400 font-bold">—— 或者使用手机号登录 ——</div>
+
+      <!-- 手机号登录区 -->
+      <div class="space-y-3">
+        <label class="block font-bold text-gray-800 text-lg">方式二：输入手机号码登录</label>
+        <input id="phoneInput" type="tel" maxlength="11" placeholder="请输入11位手机号码" class="w-full border-2 border-gray-400 rounded-xl p-3.5 text-xl font-bold" />
+        <button onclick="doLogin('phone')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl text-xl shadow">
+          📱 手机号确认登录 (立送10积分)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentUser = JSON.parse(localStorage.getItem('qinjia_user') || 'null');
+
+    function updateHeaderUI() {
+      const statusArea = document.getElementById('userStatusArea');
+      const banner = document.getElementById('loginBanner');
+      if (currentUser) {
+        banner.classList.add('hidden');
+        statusArea.innerHTML = `
+          <div class="flex items-center gap-3 bg-red-800 px-4 py-2 rounded-full">
+            <span>👤 ${currentUser.nickname}</span>
+            <span class="bg-yellow-400 text-red-900 font-extrabold px-3 py-1 rounded-full">剩余积分: ${currentUser.points}</span>
+            <button onclick="logout()" class="text-xs underline text-red-200">退出</button>
+          </div>
+        `;
+      } else {
+        banner.classList.remove('hidden');
+      }
+    }
+
+    function openLoginModal() {
+      document.getElementById('loginModal').classList.remove('hidden');
+      document.getElementById('loginModal').classList.add('flex');
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.add('hidden');
+      document.getElementById('loginModal').classList.remove('flex');
+    }
+
+    async function doLogin(type) {
+      let account = '';
+      if (type === 'phone') {
+        account = document.getElementById('phoneInput').value.trim();
+        if (!/^1\d{10}$/.test(account)) return alert('叔叔阿姨，请输入正确的11位手机号码！');
+      } else {
+        account = 'wx_user_' + Math.floor(10000 + Math.random() * 90000);
+      }
+
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ loginType: type, account, nickname: type === 'wechat' ? '微信家长' : undefined })
+      });
+      const json = await res.json();
+      if (json.code === 0) {
+        currentUser = json.data;
+        localStorage.setItem('qinjia_user', JSON.stringify(currentUser));
+        closeLoginModal();
+        updateHeaderUI();
+        loadProfiles();
+        alert(`登录成功！当前可用积分：${currentUser.points}`);
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('qinjia_user');
+      currentUser = null;
+      location.reload();
+    }
+
+    async function loadProfiles() {
+      const gender = document.getElementById('filterGender').value;
+      const city = document.getElementById('filterCity').value.trim();
+      const userId = currentUser ? currentUser.id : 0;
+
+      const res = await fetch(`/api/profiles?userId=${userId}&gender=${encodeURIComponent(gender)}&city=${encodeURIComponent(city)}`);
+      const json = await res.json();
+      const container = document.getElementById('profilesContainer');
+
+      container.innerHTML = json.data.map(p => {
+        const age = new Date().getFullYear() - p.birth_year;
+        return `
+          <div class="bg-white rounded-2xl shadow-md p-5 border-2 border-amber-200 flex flex-col justify-between space-y-3">
+            <div>
+              <div class="flex items-center gap-4">
+                <img src="${p.avatar_url}" class="w-20 h-20 rounded-full object-cover border-2 border-red-500" />
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="text-2xl font-bold text-gray-900">${p.name}</h3>
+                    <span class="px-2.5 py-0.5 rounded-full text-sm font-bold ${p.gender === '男' ? 'bg-blue-100 text-blue-800' : 'bg-pink-100 text-pink-800'}">${p.gender} · ${age}岁</span>
+                  </div>
+                  <p class="text-base text-gray-600 mt-1">📍 ${p.city} | 📏 ${p.height_cm}cm | 🎓 ${p.education}</p>
+                  <span class="inline-block mt-1 text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded">来源：${p.source_site}</span>
+                </div>
+              </div>
+              <div class="mt-3 grid grid-cols-2 gap-2 bg-amber-50 p-3 rounded-xl text-base">
+                <div><b>💼 职业：</b>${p.profession}</div>
+                <div><b>💰 年薪：</b>${p.income}</div>
+                <div class="col-span-2"><b>🏠 住房情况：</b>${p.housing}</div>
+              </div>
+              <p class="mt-3 text-gray-700 leading-relaxed"><b>家长寄语：</b>${p.intro}</p>
+            </div>
+
+            <!-- 积分解锁联系方式区 -->
+            <div class="pt-3 border-t border-gray-200">
+              ${p.is_unlocked ? `
+                <div class="bg-green-100 border-2 border-green-600 text-green-900 p-3 rounded-xl font-bold text-lg">
+                  ✅ 家长微信/电话：<span class="select-all underline">${p.contact_wechat}</span>
+                </div>
+              ` : `
+                <button onclick="unlockCard(${p.id})" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl text-lg shadow">
+                  🔓 消耗 ${p.unlock_cost} 积分解锁家长联系方式
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function unlockCard(profileId) {
+      if (!currentUser) {
+        alert('叔叔阿姨，请先点击上方按钮登录账号，即可获赠免费积分！');
+        return openLoginModal();
+      }
+      const res = await fetch('/api/profiles/unlock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: currentUser.id, profileId })
+      });
+      const json = await res.json();
+      if (json.code === 0) {
+        currentUser.points = json.points;
+        localStorage.setItem('qinjia_user', JSON.stringify(currentUser));
+        updateHeaderUI();
+        loadProfiles();
+        alert(`解锁成功！对方家长联系方式为：${json.contact}`);
+      } else {
+        alert(json.message);
+        location.hash = '#tab-points';
+      }
+    }
+
+    async function earnPoints(type) {
+      if (!currentUser) return openLoginModal();
+      if (type === 'ad') {
+        alert('正在为您播放 Google 激励广告（模拟浏览5秒）...');
+      }
+      const res = await fetch('/api/points/earn', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: currentUser.id, type })
+      });
+      const json = await res.json();
+      if (json.code === 0) {
+        currentUser.points = json.points;
+        localStorage.setItem('qinjia_user', JSON.stringify(currentUser));
+        updateHeaderUI();
+        alert(json.message);
+      }
+    }
+
+    async function autoCollectProfiles() {
+      const res = await fetch('/api/admin/auto-collect', { method: 'POST' });
+      const json = await res.json();
+      alert(json.message);
+      loadProfiles();
+    }
+
+    async function loadForum() {
+      const res = await fetch('/api/forum/posts');
+      const json = await res.json();
+      document.getElementById('forumContainer').innerHTML = json.data.map(post => `
+        <div class="border border-gray-200 rounded-xl p-4 bg-gray-50">
+          <div class="flex justify-between text-base font-bold text-red-800">
+            <span>🗣️ ${post.author_name} (${post.city})</span>
+            <span class="text-gray-400 text-sm">${post.created_at}</span>
+          </div>
+          <p class="mt-2 text-gray-800 text-lg">${post.content}</p>
+        </div>
+      `).join('');
+    }
+
+    async function submitForumPost() {
+      if (!currentUser) return openLoginModal();
+      const content = document.getElementById('postContent').value.trim();
+      const city = document.getElementById('postCity').value.trim() || '全国';
+      if (!content) return alert('请输入您想交流的内容');
+
+      await fetch('/api/forum/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: currentUser.id, authorName: currentUser.nickname, city, content })
+      });
+      document.getElementById('postContent').value = '';
+      loadForum();
+    }
+
+    // 初始化加载
+    updateHeaderUI();
+    loadProfiles();
+    loadForum();
+  </script>
+</body>
+</html>
